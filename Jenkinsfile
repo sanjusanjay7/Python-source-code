@@ -11,7 +11,10 @@ pipeline {
     stage('Build image') {
       steps {
         script {
-          def app = docker.build("sanjaykumar70/packages")
+          // Declare the 'app' variable at the top level
+          def app
+
+          app = docker.build("sanjaykumar70/packages")
         }
       }
     }
