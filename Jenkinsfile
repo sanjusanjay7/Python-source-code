@@ -4,7 +4,6 @@ pipeline {
     environment{
         DOCKERHUB_USERNAME = "sanjaykumar70"
         APP_NAME = "packages"
-        IMAGE_TAG = "$(BUILD_NUMBER)"
         IMAGE_NAME = "${DOCKERHUB_USERNAME}" + "/" + "$(APP_NAME}"
         REGISTRY_CREDS = 'dockerhub'
     }
