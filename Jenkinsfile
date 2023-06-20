@@ -1,49 +1,34 @@
-pipeline {
-  agent any
-  
-  stages {
-    stage('Clone repository') {
-      steps {
+node {
+    def app
+
+    stage('Clone Repository') {
+      
+
         checkout scm
-      }
     }
 
-    stage('Build image') {
-      steps {
-        script {
-          // Declare the 'app' variable at the top level
-          def app
-
-          app = docker.build("sanjaykumar70/packages")
-        }
-      }
+    stage('Build Image') {
+  
+       app = docker.build("sanjaykumar70/packages")
     }
 
-    stage('Test image') {
-      steps {
-        script {
-          app.inside {
+    stage('Test Image') {
+  
+
+        app.inside {
             sh 'echo "Tests passed"'
-          }
         }
-      }
     }
 
-    stage('Push image') {
-      steps {
-        script {
-          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+    stage('Push Image') {
+        
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
             app.push("${env.BUILD_NUMBER}")
-          }
         }
-      }
     }
     
     stage('Trigger ManifestUpdate') {
-      steps {
-        echo "Triggering updatemanifestjob"
-        build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
-      }
-    }
-  }
+                echo "triggering updatemanifestjob"
+                build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+        }
 }
