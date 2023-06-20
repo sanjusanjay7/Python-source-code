@@ -9,7 +9,7 @@ node {
 
     stage('Build Image') {
   
-       app = docker.build("dockersampath/packages")
+       app = docker.build("sanjaykumar70/packages")
     }
 
     stage('Test Image') {
