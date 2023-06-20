@@ -1,6 +1,14 @@
-node {
-    def app
+pipeline {
+    agent any
 
+    environment{
+        DOCKERHUB_USERNAME = "sanjaykumar70"
+        APP_NAME = "packages"
+        IMAGE_TAG = "$(DOCKERTAG)"
+        IMAGE_NAME = "${DOCKERHUB_USERNAME}" + "/" + "$(APP_NAME}"
+        REGISTRY_CREDS = 'dockerhub'
+    }
+    
     stage('Clone repository') {
       
 
@@ -9,7 +17,9 @@ node {
             script{
                 git credentialsId: 'github',
                 url: 'https://github.com/sanjusanjay7/Python-source-code.git'
-    }
+            }
+            }
+        }   
 
     stage('Build image') {
   
