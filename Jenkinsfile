@@ -1,18 +1,18 @@
 node {
     def app
 
-    stage('Clone Repository') {
+    stage('Clone repository') {
       
 
         checkout scm
     }
 
-    stage('Build Image') {
+    stage('Build image') {
   
        app = docker.build("sanjaykumar70/packages")
     }
 
-    stage('Test Image') {
+    stage('Test image') {
   
 
         app.inside {
@@ -20,7 +20,7 @@ node {
         }
     }
 
-    stage('Push Image') {
+    stage('Push image') {
         
         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
             app.push("${env.BUILD_NUMBER}")
