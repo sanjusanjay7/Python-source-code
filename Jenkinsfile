@@ -1,31 +1,18 @@
-pipeline {
-    agent any
+node {
+    def app
 
-    environment{
-        DOCKERHUB_USERNAME = "sanjaykumar70"
-        APP_NAME = "packages"
-        IMAGE_NAME = "${DOCKERHUB_USERNAME}" + "/" + "$(APP_NAME}"
-        REGISTRY_CREDS = 'dockerhub'
-    }
-    
-    stage('Clone repository') {
+    stage('Clone Repository') {
       
 
         checkout scm
-        steps{
-            script{
-                git credentialsId: 'github',
-                url: 'https://github.com/sanjusanjay7/Python-source-code.git'
-            }
-            }
-        }   
+    }
 
-    stage('Build image') {
+    stage('Build Image') {
   
        app = docker.build("sanjaykumar70/packages")
     }
 
-    stage('Test image') {
+    stage('Test Image') {
   
 
         app.inside {
@@ -33,7 +20,7 @@ pipeline {
         }
     }
 
-    stage('Push image') {
+    stage('Push Image') {
         
         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
             app.push("${env.BUILD_NUMBER}")
