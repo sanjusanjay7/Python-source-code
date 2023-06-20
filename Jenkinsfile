@@ -5,6 +5,10 @@ node {
       
 
         checkout scm
+        steps{
+            script{
+                git credentialsId: 'github',
+                url: 'https://github.com/sanjusanjay7/Python-source-code.git'
     }
 
     stage('Build image') {
